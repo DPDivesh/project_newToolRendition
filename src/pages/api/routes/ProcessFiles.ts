@@ -2,13 +2,12 @@ import { PrismaClient } from "@prisma/client";
 import columbusDataProcessing from "../excelProcessing";
 import { authOptions } from '../auth/[...nextauth]'
 import { getServerSession } from "next-auth/next"
+import { NextApiRequest, NextApiResponse } from "next";
 
-
-export default async function handler(req, res) {
-  console.log("process file", req.body)
+export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 
   
-  const session = await getServerSession(req, res, authOptions)
+  // const session = await getServerSession(req, res, authOptions)
 
 
 
@@ -41,8 +40,8 @@ export default async function handler(req, res) {
   
       
       
-        console.log("test");
-       await columbusDataProcessing().catch((err)=>console.log(err))
+        console.log("test4  ");
+       let results = await columbusDataProcessing(req.body.email).catch((err)=>console.log(err))
       //  res.status(200).json({ name: 'John Doe' });
 
         // const refromattedPostSubmit =async(allPosts: any[])=>{
@@ -68,21 +67,21 @@ export default async function handler(req, res) {
       
       
       
-        console.log("hi")
-        const job = schedule.scheduleJob({hour:15,minute:48}, ()=>emailDatabaseUpdate());
-        job
+        // console.log("hi")
+        // const job = schedule.scheduleJob({hour:15,minute:48}, ()=>emailDatabaseUpdate());
+        // job
         // columbusDataProcessing();
       
       // process.exit()
       
       
-      
+         res.status(200).json(results)
+
       
       
       
       
 
-   res.status(200).json({message: 'We did it'})
 }
 
 

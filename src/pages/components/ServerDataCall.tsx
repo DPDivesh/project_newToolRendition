@@ -1,17 +1,20 @@
 import Squares from "./Squares";
 import React,{useEffect,useState,useRef} from "react";
 import { PrismaClient } from '@prisma/client';
+import axios, { AxiosResponse } from 'axios'
 
- const ServerDataCall = (props: { userData: { email: any; }; })=>{
+type Props = {
+  userData: {email: any, user: any}
+}
+
+
+ const ServerDataCall = (props: Props)=>{
 
     const [user,setUser]:any = useState({})
-    const effectRan = useRef(false);
     
       const [backendData,setBackendData]:any = useState({});
       
-      const dataFetchedRef = useRef(false);
-      const [visible,setVisible]:any= useState(true);
-      const [newUser,setNewUser]:any = useState(false);
+      
       const testingBackEnd =[{
         "Terminal ID": "L647934",
         "Name": "LA BUENA MARKET",
@@ -112,18 +115,20 @@ import { PrismaClient } from '@prisma/client';
 
 
       const refreshData=async()=>{
-        console.log(props.userData.user.email,"userEmail")
-        const res = await fetch("/api/routes/ProcessFiles",{
-          method:'POST',
-          body:JSON.stringify({email:`${props.userData.user.email}`}),
-          headers:{
-            'Content-Type': 'application/json'
-          }
-        }).catch((err)=>{console.log(err)})
-        console.log(res,"responseeeee")
-        const data = await res.json();
-        setBackendData(data);
-       console.log('Fetching data...',data);
+        // console.log(props.userData.user.email,"userEmail")
+        // const res = await fetch("/api/routes/ProcessFiles",{
+        //   method:'POST',
+        //   body:JSON.stringify({email:`${props.userData.user.email}`}),
+        //   headers:{
+        //     'Content-Type': 'application/json'
+        //   }
+        // }).catch((err)=>{console.log(err)})
+        
+        const res2:any = await axios.post('/api/routes/ProcessFiles', {email: `${props.userData.user.email}`}).catch((err)=>(console.log(err)))
+        console.log("responseeeee", res2.data)
+        // const data = await res.json();
+        setBackendData(res2.data);
+       console.log('Fetching data...',res2);
 
        }
     
