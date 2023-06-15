@@ -33,6 +33,7 @@
     "path": "^0.12.7",
     "postcss": "8.4.23",
     "prisma": "^4.15.0",
+    "prisma-field-encryption": "^1.4.2",
     "puppeteer": "^19.11.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

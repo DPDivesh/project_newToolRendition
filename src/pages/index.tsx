@@ -3,7 +3,7 @@ import ServerDataCall from "./components/ServerDataCall"
 import React,{useEffect,useState,useRef} from "react";
 import { useSession } from "next-auth/react";
 // import '../styles/globals.css'
-import LoginBtn from "./components/LoginBtn"
+import Navbar from "./components/Navbar"
 
 
 
@@ -22,14 +22,14 @@ function App(){
          
         <nav></nav>
         <div >
-        <LoginBtn/>
+        <Navbar/>
         <ServerDataCall userData={session}/>
         </div>
          </div>
       )
     }else{
       return(
-      <LoginBtn/>
+      <Navbar/>
       )
     }
     

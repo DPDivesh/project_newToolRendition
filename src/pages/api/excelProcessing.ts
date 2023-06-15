@@ -106,7 +106,7 @@ async function columbusDataProcessing(usersEmail:string){
   
   let allPosts = await prisma.posts.findMany({where:{userEmail:usersEmail}})
   // console.log(allPosts,"ALL POSTS");
-  console.log(jsonSorted,jsonSorted.length,"------------------JSON SORTED---------------------")
+  // console.log(jsonSorted,jsonSorted.length,"------------------JSON SORTED---------------------")
 
   if(allPosts.length==0||allPosts == null){
     jsonSorted.map((entry: { TerminalID: any; storeName:string; cashBalance: any; balType: any; estCashOut: any; lastCommunication: any; lastCashWD: any; rejectBalance: any; balanceAsOf: any; Cassette1: any; minReload: any; })=>{
@@ -144,15 +144,15 @@ async function columbusDataProcessing(usersEmail:string){
       prisma.posts.update({  data:{cashBalance:entry.cashBalance},where: {TerminalId : entry.TerminalID}
       
     }).catch((err)=>{console.log(err)})  
-    console.log("updated",entry);
+    // console.log("updated",entry);
 
     }
    
 
   })
-console.log("-------------------------------------------------------------------")
+// console.log("-------------------------------------------------------------------")
   // console.log( await prisma.Posts.findMany(), "checking")
-  console.log("-------------------------------------------------------------------")
+  // console.log("-------------------------------------------------------------------")
 
   const refromattedPostSubmit =async(allPosts: any[])=>{
 

@@ -5,7 +5,7 @@ import SquaresContent from './SquaresContent.tsx'
 const Squares =(props:any)=>{
 
   // const [backendData,setBackendData] = useState({});
-console.log(props.backendData)
+// console.log(props.backendData)
 
 
   return(
@@ -14,7 +14,7 @@ console.log(props.backendData)
         {
           
         Array.from(props.backendData).map((data:any, index) =>{        
-          {console.log(props.backendData);}
+          // {console.log(props.backendData);}
           return(
             <SquaresContent data={data} key={index} />
         )},

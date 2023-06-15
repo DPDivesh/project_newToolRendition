@@ -3,13 +3,12 @@ import React,{useEffect,useState,useRef} from "react";
 import { PrismaClient } from '@prisma/client';
 import axios, { AxiosResponse } from 'axios'
 
-type Props = {
-  userData: {email: any, user: any}
-}
 
 
- const ServerDataCall = (props: Props)=>{
 
+ const ServerDataCall = (props:any)=>{
+
+  
     const [user,setUser]:any = useState({})
     
       const [backendData,setBackendData]:any = useState({});
@@ -109,11 +108,28 @@ type Props = {
     
     useEffect(() => {
       console.log("refreshing")
+    initializeLoadData()
      refreshData()
-        
       }, [])
 
+      const initializeLoadData =async()=>{
+        console.log("refreshing")
+        // const res:any = await axios.post('/api/routes/FirstLoad', {email: `${props.userData.user.email}`}).catch((err)=>(console.log(err)))
 
+
+        const res:any = await  axios.post('/api/routes/FirstLoad', {
+          email:`${props.userData.user.email}`
+        }).catch(function (error) {
+          console.log(error);
+        });
+        console.log(res)
+        setBackendData(res.data);
+
+
+        // console.log("responseeeee", res.data)
+        // const data = await res.json();
+  
+      }
       const refreshData=async()=>{
         // console.log(props.userData.user.email,"userEmail")
         // const res = await fetch("/api/routes/ProcessFiles",{
@@ -123,12 +139,12 @@ type Props = {
         //     'Content-Type': 'application/json'
         //   }
         // }).catch((err)=>{console.log(err)})
-        
-        const res2:any = await axios.post('/api/routes/ProcessFiles', {email: `${props.userData.user.email}`}).catch((err)=>(console.log(err)))
-        console.log("responseeeee", res2.data)
+        // alert(`${props.userData.user.email}`)
+        const res:any = await axios.post('/api/routes/ProcessFiles', {email: `${props.userData.user.email}`}).catch((err)=>(console.log(err)))
+        // console.log("responseeeee", res.data)
         // const data = await res.json();
-        setBackendData(res2.data);
-       console.log('Fetching data...',res2);
+        setBackendData(res.data);
+      //  console.log('Fetching data...',res);
 
        }
     
@@ -137,7 +153,6 @@ type Props = {
     
       return(
         <Squares backendData={backendData} />
-
       )
     
     
