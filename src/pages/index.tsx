@@ -10,8 +10,18 @@ import Navbar from "./components/Navbar"
 
 function App(){
   const { data: session } =  useSession()
+  const [privacy, setPrivacy] = useState(false);
 
-  
+  const onPrivacyChange =(value:any)=>{
+    setPrivacy(value)
+    console.log(value,privacy)
+
+  }
+
+
+  useEffect(() => {
+    console.log(privacy,"useeffect");
+  }, [privacy]);
 
 
      if(session){
@@ -22,8 +32,9 @@ function App(){
          
         <nav></nav>
         <div >
-        <Navbar/>
-        <ServerDataCall userData={session}/>
+        <Navbar privacySetting={privacy} onSettingUserPrivacy={onPrivacyChange}/>
+
+        <ServerDataCall privacySetting={privacy} userData={session}/>
         </div>
          </div>
       )

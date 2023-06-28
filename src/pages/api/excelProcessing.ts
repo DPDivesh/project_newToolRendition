@@ -12,7 +12,6 @@ const downloadPath = path.join(baseDir, 'src',"pages","api", 'downloads');
 const puppeteer = require('puppeteer');
 const XLSX = require("xlsx");
 
-
 const pass = process.env.SECRET_USER_PASSWORD;
 const email = process.env.SECRET_USER_EMAIL;
 const prisma = new PrismaClient()
@@ -22,18 +21,18 @@ const puppeteerLaunch=async()=>{
   
     try{
     await (async () => {
-      const browser = await puppeteer.launch({headless: true})
+      const browser = await puppeteer.launch({headless: false})
       const page = await browser.newPage();      
 
       //logs in to the website for chromium browser
       await page.goto('https://columbusdata.net/cdswebtool/login/login.aspx');
       await page.waitForSelector("#UsernameTextbox")
       // eslint-disable-next-line no-unused-expressions
-      await page.type("#UsernameTextbox",email),{delay:2000}
+      await page.type("#UsernameTextbox",email),{delay:1000}
 
 
       // eslint-disable-next-line no-unused-expressions
-      await page.type("#PasswordTextbox",pass),{delay:20000}
+      await page.type("#PasswordTextbox",pass),{delay:10000}
       await page.click("#LoginButton");
       //goes to page with main content to download
       await page.goto("https://columbusdata.net/cdswebtool/includes/report.aspx?rptname=rptTerminalStatusCassetteBalances"),{
@@ -53,12 +52,11 @@ const puppeteerLaunch=async()=>{
       });
       console.log("Downloading")
       await page.click("#btnView");
-      await page.waitForNetworkIdle({idleTime:9000})
-
+      await page.waitForNetworkIdle({idleTime:5000})
+      browser.close()
     })();
   }catch(err){
     return console.log("puppeteer error",err);
-    
   }
     }
 

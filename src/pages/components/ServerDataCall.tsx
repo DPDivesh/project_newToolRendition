@@ -9,10 +9,14 @@ import axios, { AxiosResponse } from 'axios'
  const ServerDataCall = (props:any)=>{
 
   
-    const [user,setUser]:any = useState({})
+    const [state,setState]:any = useState("Loading");
     
       const [backendData,setBackendData]:any = useState({});
-      
+      const timer = setTimeout(() => {
+        refreshData()
+        console.log("refreshing")
+  
+      }, 9000)
       
       const testingBackEnd =[{
         "Terminal ID": "L647934",
@@ -107,14 +111,13 @@ import axios, { AxiosResponse } from 'axios'
     ];
     
     useEffect(() => {
-      console.log("refreshing")
     initializeLoadData()
-     refreshData()
+    timer
+     
       }, [])
 
       const initializeLoadData =async()=>{
-        console.log("refreshing")
-        // const res:any = await axios.post('/api/routes/FirstLoad', {email: `${props.userData.user.email}`}).catch((err)=>(console.log(err)))
+\        // const res:any = await axios.post('/api/routes/FirstLoad', {email: `${props.userData.user.email}`}).catch((err)=>(console.log(err)))
 
 
         const res:any = await  axios.post('/api/routes/FirstLoad', {
@@ -130,6 +133,7 @@ import axios, { AxiosResponse } from 'axios'
         // const data = await res.json();
   
       }
+
       const refreshData=async()=>{
         // console.log(props.userData.user.email,"userEmail")
         // const res = await fetch("/api/routes/ProcessFiles",{
@@ -152,7 +156,10 @@ import axios, { AxiosResponse } from 'axios'
     
     
       return(
-        <Squares backendData={backendData} />
+        <>
+        {props.privacySetting ?   <Squares backendData={backendData}/>:<div className="blur-sm"><Squares backendData={backendData}/> </div>}
+        </>
+
       )
     
     

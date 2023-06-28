@@ -36,9 +36,10 @@ model Session {
 
 model ScrapeInfo {
   id        String @id @default(cuid())
-  email     String @unique
+  email     String
   cUserName String ///@encrypted
   cPass     String ///@encrypted
+  provider  String @unique
 }
 
 model User {

@@ -11,7 +11,6 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 
 
 
-      console.log("WTR")
       const express = require('express')
       const app = express();
       // const file = require("./columbusDownloader");
@@ -40,7 +39,6 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
   
       
       
-        console.log("test4  ");
        let results = await columbusDataProcessing(req.body.email).catch((err)=>console.log(err))
       //  res.status(200).json({ name: 'John Doe' });
 
