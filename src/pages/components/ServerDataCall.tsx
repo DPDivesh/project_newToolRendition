@@ -110,6 +110,23 @@ import { PrismaClient } from '@prisma/client';
         
       }, [])
 
+      const initializeLoadData =async()=>{
+\        // const res:any = await axios.post('/api/routes/FirstLoad', {email: `${props.userData.user.email}`}).catch((err)=>(console.log(err)))
+
+
+        const res:any = await  axios.post('/api/routes/FirstLoad', {
+          email:`${props.userData.user.email}`
+        }).catch(function (error) {
+          console.log(error);
+        });
+        console.log(res)
+        setBackendData(res.data);
+
+
+        // console.log("responseeeee", res.data)
+        // const data = await res.json();
+  
+      }
 
       const refreshData=async()=>{
         console.log(props.userData.user.email,"userEmail")
