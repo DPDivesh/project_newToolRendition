@@ -1,6 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import { authOptions } from './auth/[...nextauth]';
 import { getServerSession } from "next-auth/next"
+import { PrismaClientOptions } from '@prisma/client/runtime';
+import {isEqual, parse, parseISO} from "date-fns"
 require('dotenv').config()
 
 const path = require('path');
@@ -10,27 +12,27 @@ const downloadPath = path.join(baseDir, 'src',"pages","api", 'downloads');
 const puppeteer = require('puppeteer');
 const XLSX = require("xlsx");
 
-
 const pass = process.env.SECRET_USER_PASSWORD;
 const email = process.env.SECRET_USER_EMAIL;
 const prisma = new PrismaClient()
 
-const puppeteerLauch=async()=>{
+
+const puppeteerLaunch=async()=>{
   
     try{
     await (async () => {
-      const browser = await puppeteer.launch({headless: "new"})
+      const browser = await puppeteer.launch({headless: false})
       const page = await browser.newPage();      
 
       //logs in to the website for chromium browser
       await page.goto('https://columbusdata.net/cdswebtool/login/login.aspx');
       await page.waitForSelector("#UsernameTextbox")
       // eslint-disable-next-line no-unused-expressions
-      await page.type("#UsernameTextbox",email),{delay:2000}
+      await page.type("#UsernameTextbox",email),{delay:1000}
 
 
       // eslint-disable-next-line no-unused-expressions
-      await page.type("#PasswordTextbox",pass),{delay:20000}
+      await page.type("#PasswordTextbox",pass),{delay:10000}
       await page.click("#LoginButton");
       //goes to page with main content to download
       await page.goto("https://columbusdata.net/cdswebtool/includes/report.aspx?rptname=rptTerminalStatusCassetteBalances"),{
@@ -50,18 +52,17 @@ const puppeteerLauch=async()=>{
       });
       console.log("Downloading")
       await page.click("#btnView");
-      await page.waitForNetworkIdle({idleTime:9000})
-
+      await page.waitForNetworkIdle({idleTime:5000})
+      browser.close()
     })();
   }catch(err){
     return console.log("puppeteer error",err);
-    
   }
     }
 
-async function columbusDataProcessing(){
+async function columbusDataProcessing(usersEmail:string){
   
-    await puppeteerLauch();
+    await puppeteerLaunch();
     const filePath = path.join(baseDir, 'src',"pages","api", 'downloads', 'rptTerminalStatusCassetteBalances.xls');
     console.debug('File path:', filePath);
     const fileData = fs.readFileSync(filePath);
@@ -101,15 +102,16 @@ async function columbusDataProcessing(){
   //if the post doest exist make it if it does update
 // if (allPosts){
   
-  let allPosts = await prisma.posts.findMany()
+  let allPosts = await prisma.posts.findMany({where:{userEmail:usersEmail}})
   // console.log(allPosts,"ALL POSTS");
-  if(allPosts.length==0||allPosts == null){
+  // console.log(jsonSorted,jsonSorted.length,"------------------JSON SORTED---------------------")
 
-    jsonSorted.map(async (entry: { TerminalID: any; cashBalance: any; balType: any; estCashOut: any; lastCommunication: any; lastCashWD: any; rejectBalance: any; balanceAsOf: any; Cassette1: any; minReload: any; })=>{
-    // console.log(entry)
-    prisma.Posts.create({data:{
+  if(allPosts.length==0||allPosts == null){
+    jsonSorted.map((entry: { TerminalID: any; storeName:string; cashBalance: any; balType: any; estCashOut: any; lastCommunication: any; lastCashWD: any; rejectBalance: any; balanceAsOf: any; Cassette1: any; minReload: any; })=>{
+    prisma.posts.create({data:{
       TerminalId:entry.TerminalID,
-      storeName:"test",
+      userEmail:usersEmail,
+      storeName:entry.storeName,
       cashBalance:entry.cashBalance,
       balType:entry.balType,
       estCashOut:entry.estCashOut,
@@ -130,22 +132,25 @@ async function columbusDataProcessing(){
     //set to find all posts with the entries terminal id 
     //right now its updating all of the post for each value? of json sorted
                //      (we need to get the dbs)        (We have this) 
-    // let filteredPosts = await prisma.Posts.findMany({where:{TerminalId :entry.TerminalId}})
-    // // console.log(entry,"Entry---------","---------------------------- Filtered", filteredPosts)
-    // if(entry.cashBalance != filteredPosts.cashBalance){
-     
-    //   prisma.Posts.update({  data:{cashBalance:entry.cashBalance},where: {TerminalId : entry.TerminalId}
+    let filteredPosts:any = await prisma.posts.findMany({where:{userEmail:usersEmail, TerminalId:entry.TerminalID}})
+    let value1 = parse(entry.lastCommunication, 'MM/dd/yy HH:mm', new Date());
+    let value2 = parse(filteredPosts.lastCommunication, 'MM/dd/yy HH:mm', new Date())
+    let result = isEqual(value1,value2)
+    if( filteredPosts && result && filteredPosts.TerminalID == entry.TerminalId ){
+      console.log("before ", filteredPosts.lastCommunication,"postinfo");
+
+      prisma.posts.update({  data:{cashBalance:entry.cashBalance},where: {TerminalId : entry.TerminalID}
       
-    // }).catch((err)=>{console.log(err)})  
-    // }
-    
+    }).catch((err)=>{console.log(err)})  
+    // console.log("updated",entry);
+
+    }
    
-    // console.log("updated",entry.cashBalance);
 
   })
-console.log("-------------------------------------------------------------------")
+// console.log("-------------------------------------------------------------------")
   // console.log( await prisma.Posts.findMany(), "checking")
-  console.log("-------------------------------------------------------------------")
+  // console.log("-------------------------------------------------------------------")
 
   const refromattedPostSubmit =async(allPosts: any[])=>{
 

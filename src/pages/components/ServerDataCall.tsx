@@ -1,17 +1,23 @@
 import Squares from "./Squares";
 import React,{useEffect,useState,useRef} from "react";
 import { PrismaClient } from '@prisma/client';
+import axios, { AxiosResponse } from 'axios'
 
- const ServerDataCall = (props: { userData: { email: any; }; })=>{
 
-    const [user,setUser]:any = useState({})
-    const effectRan = useRef(false);
+
+
+ const ServerDataCall = (props:any)=>{
+
+  
+    const [state,setState]:any = useState("Loading");
     
       const [backendData,setBackendData]:any = useState({});
+      const timer = setTimeout(() => {
+        refreshData()
+        console.log("refreshing")
+  
+      }, 9000)
       
-      const dataFetchedRef = useRef(false);
-      const [visible,setVisible]:any= useState(true);
-      const [newUser,setNewUser]:any = useState(false);
       const testingBackEnd =[{
         "Terminal ID": "L647934",
         "Name": "LA BUENA MARKET",
@@ -105,13 +111,13 @@ import { PrismaClient } from '@prisma/client';
     ];
     
     useEffect(() => {
-      console.log("refreshing")
-     refreshData()
-        
+    initializeLoadData()
+    timer
+     
       }, [])
 
       const initializeLoadData =async()=>{
-\        // const res:any = await axios.post('/api/routes/FirstLoad', {email: `${props.userData.user.email}`}).catch((err)=>(console.log(err)))
+      // const res:any = await axios.post('/api/routes/FirstLoad', {email: `${props.userData.user.email}`}).catch((err)=>(console.log(err)))
 
 
         const res:any = await  axios.post('/api/routes/FirstLoad', {
@@ -129,18 +135,20 @@ import { PrismaClient } from '@prisma/client';
       }
 
       const refreshData=async()=>{
-        console.log(props.userData.user.email,"userEmail")
-        const res = await fetch("/api/routes/ProcessFiles",{
-          method:'POST',
-          body:JSON.stringify({email:`${props.userData.user.email}`}),
-          headers:{
-            'Content-Type': 'application/json'
-          }
-        }).catch((err)=>{console.log(err)})
-        console.log(res,"responseeeee")
-        const data = await res.json();
-        setBackendData(data);
-       console.log('Fetching data...',data);
+        // console.log(props.userData.user.email,"userEmail")
+        // const res = await fetch("/api/routes/ProcessFiles",{
+        //   method:'POST',
+        //   body:JSON.stringify({email:`${props.userData.user.email}`}),
+        //   headers:{
+        //     'Content-Type': 'application/json'
+        //   }
+        // }).catch((err)=>{console.log(err)})
+        // alert(`${props.userData.user.email}`)
+        const res:any = await axios.post('/api/routes/ProcessFiles', {email: `${props.userData.user.email}`}).catch((err)=>(console.log(err)))
+        // console.log("responseeeee", res.data)
+        // const data = await res.json();
+        setBackendData(res.data);
+      //  console.log('Fetching data...',res);
 
        }
     
@@ -148,7 +156,9 @@ import { PrismaClient } from '@prisma/client';
     
     
       return(
-        <Squares backendData={backendData} />
+        <>
+        {props.privacySetting ?   <Squares backendData={backendData}/>:<div className="blur-sm"><Squares backendData={backendData}/> </div>}
+        </>
 
       )
     
