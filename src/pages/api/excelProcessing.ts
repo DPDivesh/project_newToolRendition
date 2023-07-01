@@ -12,27 +12,27 @@ const downloadPath = path.join(baseDir, 'src',"pages","api", 'downloads');
 const puppeteer = require('puppeteer');
 const XLSX = require("xlsx");
 
-const pass = process.env.SECRET_USER_PASSWORD;
-const email = process.env.SECRET_USER_EMAIL;
+// const pass = process.env.SECRET_USER_PASSWORD;
+// const email = process.env.SECRET_USER_EMAIL;
 const prisma = new PrismaClient()
 
 
-const puppeteerLaunch=async()=>{
+const puppeteerLaunch=async(userName:string,userPass:string)=>{
   
     try{
     await (async () => {
-      const browser = await puppeteer.launch({headless: false})
+      const browser = await puppeteer.launch({headless: "new"})
       const page = await browser.newPage();      
 
       //logs in to the website for chromium browser
       await page.goto('https://columbusdata.net/cdswebtool/login/login.aspx');
       await page.waitForSelector("#UsernameTextbox")
       // eslint-disable-next-line no-unused-expressions
-      await page.type("#UsernameTextbox",email),{delay:1000}
+      await page.type("#UsernameTextbox",userName),{delay:1000}
 
 
       // eslint-disable-next-line no-unused-expressions
-      await page.type("#PasswordTextbox",pass),{delay:10000}
+      await page.type("#PasswordTextbox",userPass),{delay:10000}
       await page.click("#LoginButton");
       //goes to page with main content to download
       await page.goto("https://columbusdata.net/cdswebtool/includes/report.aspx?rptname=rptTerminalStatusCassetteBalances"),{
@@ -52,7 +52,8 @@ const puppeteerLaunch=async()=>{
       });
       console.log("Downloading")
       await page.click("#btnView");
-      await page.waitForNetworkIdle({idleTime:5000})
+      await page.waitForNetworkIdle({idleTime:10000})
+
       browser.close()
     })();
   }catch(err){
@@ -60,9 +61,9 @@ const puppeteerLaunch=async()=>{
   }
     }
 
-async function columbusDataProcessing(usersEmail:string){
+async function columbusDataProcessing(usersEmail:string, userName:string, userPass:string){
   
-    await puppeteerLaunch();
+    await puppeteerLaunch(userName, userPass);
     const filePath = path.join(baseDir, 'src',"pages","api", 'downloads', 'rptTerminalStatusCassetteBalances.xls');
     console.debug('File path:', filePath);
     const fileData = fs.readFileSync(filePath);
@@ -128,6 +129,7 @@ async function columbusDataProcessing(usersEmail:string){
 
   // console.log(session)
       // console.log("#####################################################")
+      console.log(jsonSorted)
   jsonSorted.map(async (entry: any)=>{
     //set to find all posts with the entries terminal id 
     //right now its updating all of the post for each value? of json sorted
@@ -136,15 +138,27 @@ async function columbusDataProcessing(usersEmail:string){
     let value1 = parse(entry.lastCommunication, 'MM/dd/yy HH:mm', new Date());
     let value2 = parse(filteredPosts.lastCommunication, 'MM/dd/yy HH:mm', new Date())
     let result = isEqual(value1,value2)
-    if( filteredPosts && result && filteredPosts.TerminalID == entry.TerminalId ){
+    // if( filteredPosts && result && filteredPosts.TerminalID == entry.TerminalId ){
       console.log("before ", filteredPosts.lastCommunication,"postinfo");
 
-      prisma.posts.update({  data:{cashBalance:entry.cashBalance},where: {TerminalId : entry.TerminalID}
+   await prisma.posts.update({  data:{
+    TerminalId:entry.TerminalID,
+    userEmail:usersEmail,
+    storeName:entry.storeName,
+    cashBalance:entry.cashBalance,
+    balType:entry.balType,
+    estCashOut:entry.estCashOut,
+    lastCommunication:entry.lastCommunication,
+    lastCashWD:entry.lastCashWD,
+    rejectBalance:entry.rejectBalance,
+    balanceAsOf:entry.balanceAsOf,
+    Cassette1:entry.Cassette1,
+    minReload:entry.minReload},where: {TerminalId : entry.TerminalID}
       
     }).catch((err)=>{console.log(err)})  
     // console.log("updated",entry);
 
-    }
+    // }
    
 
   })

@@ -3,10 +3,9 @@ import SquaresContent from './SquaresContent.tsx'
 
 
 const Squares =(props:any)=>{
-
   // const [backendData,setBackendData] = useState({});
 // console.log(props.backendData)
-
+console.log("am i rebuilt?")
 
   return(
     <div className='bg-indigo-400'> 

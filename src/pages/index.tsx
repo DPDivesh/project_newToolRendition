@@ -25,7 +25,6 @@ function App(){
 
 
      if(session){
-      console.log(session);
 
       return(
         <div>

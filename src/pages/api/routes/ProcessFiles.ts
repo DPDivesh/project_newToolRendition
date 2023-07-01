@@ -1,8 +1,8 @@
-import { PrismaClient } from "@prisma/client";
 import columbusDataProcessing from "../excelProcessing";
 import { authOptions } from '../auth/[...nextauth]'
 import { getServerSession } from "next-auth/next"
 import { NextApiRequest, NextApiResponse } from "next";
+import prisma from "../client";
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 
@@ -38,8 +38,11 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         //delays for puppeteer 
   
       
-      
-       let results = await columbusDataProcessing(req.body.email).catch((err)=>console.log(err))
+      const scrapeInfo = await prisma.scrapeInfo.findMany({where:{email:req.body.email, provider:"columbus"}})
+
+  
+
+       let results = await columbusDataProcessing(req.body.email, scrapeInfo[0].cUserName,scrapeInfo[0].cPass).catch((err)=>console.log(err))
       //  res.status(200).json({ name: 'John Doe' });
 
         // const refromattedPostSubmit =async(allPosts: any[])=>{

@@ -27,10 +27,10 @@ const reloadUpdateHandler = (e:any)=>{
   e.preventDefault()
 console.log(e.target[0].value,"value");
 //need to figure out how to get specific terminal id in here
-console.log(session?.user.email, TerminalID)
+console.log(session?.user?.email, TerminalID)
 
 axios.post("/api/routes/updateReloadAmount",{
-  email:session?.user.email,
+  email:session?.user?.email,
   TerminalID: TerminalID,
   minCash: minCash
 })
@@ -59,7 +59,6 @@ axios.post("/api/routes/updateReloadAmount",{
             <h3><span style={{color:"grey"}}>ID: {TerminalID}</span></h3>
             <h3><span style={{color:"grey"}}>Min Reload: {minCash}</span></h3>
             <form id="minimal-reload" onSubmit={reloadUpdateHandler}>
-
               <InfoForm reload={minReloadHandler} minCash={minCash}/>
               </form>
 
