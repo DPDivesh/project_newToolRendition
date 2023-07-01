@@ -10,7 +10,6 @@ export default function Component(props:any) {
   const {data:session} = useSession()
   let userInfoImage:any = session?.user?.image
   const pathname = usePathname()
-console.log(pathname);
 
   if (session) {
     return (

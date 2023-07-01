@@ -24,10 +24,10 @@ client.$use(fieldEncryptionMiddleware({
 
 await prisma.scrapeInfo.create({data:{
     email:email,
-     cUserName:user,
+    cUserName:user,
     cPass:pass,
-    provider:provider
-    }}).catch((error:any)=>console.log(error))
+    provider:"columbus"
+    }}).catch((error:any)=>console.log(error,"fail"))
 
 console.log(req.body,"-------------------------")
     res.status(200).json("success")
