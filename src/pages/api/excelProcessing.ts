@@ -1,8 +1,10 @@
+import prisma from '../api/client';
 import { PrismaClient } from '@prisma/client';
 import { authOptions } from './auth/[...nextauth]';
 import { getServerSession } from "next-auth/next"
 import { PrismaClientOptions } from '@prisma/client/runtime';
 import {isEqual, parse, parseISO} from "date-fns"
+import { fieldEncryptionMiddleware } from 'prisma-field-encryption';
 require('dotenv').config()
 
 const path = require('path');
@@ -11,17 +13,17 @@ const baseDir = process.cwd();
 const downloadPath = path.join(baseDir, 'src',"pages","api", 'downloads');
 const puppeteer = require('puppeteer');
 const XLSX = require("xlsx");
+export const client = new PrismaClient()
 
 // const pass = process.env.SECRET_USER_PASSWORD;
 // const email = process.env.SECRET_USER_EMAIL;
-const prisma = new PrismaClient()
 
 
 const puppeteerLaunch=async(userName:string,userPass:string)=>{
   
     try{
     await (async () => {
-      const browser = await puppeteer.launch({headless: "new"})
+      const browser = await puppeteer.launch({headless: false})
       const page = await browser.newPage();      
 
       //logs in to the website for chromium browser
@@ -35,6 +37,7 @@ const puppeteerLaunch=async(userName:string,userPass:string)=>{
       await page.type("#PasswordTextbox",userPass),{delay:10000}
       await page.click("#LoginButton");
       //goes to page with main content to download
+      //enable this to reload 
       await page.goto("https://columbusdata.net/cdswebtool/includes/report.aspx?rptname=rptTerminalStatusCassetteBalances"),{
         waitUntil: "domcontentloaded",
       };
@@ -61,9 +64,31 @@ const puppeteerLaunch=async(userName:string,userPass:string)=>{
   }
     }
 
-async function columbusDataProcessing(usersEmail:string, userName:string, userPass:string){
+async function columbusDataProcessing(usersEmail:string){
+   // Now this works
+
+   client.$use(
+    fieldEncryptionMiddleware({
+      encryptionKey: process.env.PRISMA_FIELD_ENCRYPTION,
+      decryptionKeys: [
+        process.env.PRISMA_FIELD_ENCRYPTION      // Add other keys here. Order does not matter.
+      ]
+    })
+  )
+   const userTest = await client.scrapeInfo.findUnique({
+    where: {
+      email:usersEmail
+        }
+  })
+  console.log("==============",userTest?.cPass,"================")
+
+  //temp disable
   
-    await puppeteerLaunch(userName, userPass);
+  // await puppeteerLaunch(userName, userPass);
+  
+  
+  
+  
     const filePath = path.join(baseDir, 'src',"pages","api", 'downloads', 'rptTerminalStatusCassetteBalances.xls');
     console.debug('File path:', filePath);
     const fileData = fs.readFileSync(filePath);

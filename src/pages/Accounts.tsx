@@ -1,8 +1,21 @@
 import CurrentServices from "./components/CurrentServices"
 import Navbar from "./components/Navbar"
 import ScrapeInfoForm from "./components/ScrapeInfoForm"
+import prisma from "./api/client"
+import { useSession } from "next-auth/react"
+import axios from "axios"
+import { useState } from "react"
 
  const Accounts =()=>{
+    const {data:session} = useSession()
+    const [userProviderInfo, setUserProviderInfo] =useState()
+    
+    let currentServices:any = axios.post("/api/routes/getUsersScrapeInfo", {email:session?.user?.email}).catch(function (error) {
+        console.log(error);
+      });
+// console.log(currentServices.data[0].provider,"LOGGGGGGGGGGGGG")
+
+
     return(
         <>
         <Navbar/>
@@ -13,7 +26,7 @@ import ScrapeInfoForm from "./components/ScrapeInfoForm"
             </div>
             <div className="m-auto">    
                 <div>
-                <h1 className="flex ">Current Services { true? <h1 className="text-gray-400">(click to enable)</h1> : <h1>sdsd</h1>} :</h1>
+                <h1 className="flex ">Current Services {}</h1>
 
                    <CurrentServices/>
                 </div>

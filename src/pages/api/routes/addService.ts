@@ -1,11 +1,16 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import prisma, { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { fieldEncryptionMiddleware } from 'prisma-field-encryption'
 
 import { useSession } from "next-auth/react";
 
+let prisma = new PrismaClient()
 
 export const client = new PrismaClient()
+
+client.$use(fieldEncryptionMiddleware({
+    encryptionKey: process.env.PRISMA_FIELD_ENCRYPTION
+}))
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse){
 
@@ -16,13 +21,12 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse){
 const email:string = req.body.email
 const user:string = req.body.user
 const pass:string = req.body.pass 
-const provider:string = req.body.provider
+// const provider:string = req.body.provider
 
-client.$use(fieldEncryptionMiddleware({
-    encryptionKey: process.env.PRISMA_FIELD_ENCRYPTION
-}))
 
-await prisma.scrapeInfo.create({data:{
+
+
+await client.scrapeInfo.create({data:{
     email:email,
     cUserName:user,
     cPass:pass,
