@@ -10,10 +10,9 @@ console.log(req.body,"request")
 // let postToBeUpdated = await prisma.posts.findMany({where:{userEmail:req.body.email, TerminalId:req.body.TerminalID}})
 // await prisma.posts.update({
 //     minReload:req.body.minCash},{where: {TerminalId : req.body.TerminalID}})
-   
-    const updateUser = await prisma.user.update({
+   let usersEmail:any = req.body.email!
+    const updateUser = await prisma.posts.update({
         where: {
-          userEmail: req.body.email,
           TerminalId: req.body.TerminalID
         },
         data: {

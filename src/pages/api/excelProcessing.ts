@@ -84,7 +84,6 @@ async function columbusDataProcessing(usersEmail:string){
 let userName:string = userTest?.cUserName!
 let userPass:string = userTest?.cPass!
   //temp disable
-  console.log("=================================",userName,userPass,"===============================")
   await puppeteerLaunch( userName, userPass);
   
   
@@ -155,7 +154,7 @@ let userPass:string = userTest?.cPass!
 
   // console.log(session)
       // console.log("#####################################################")
-      console.log(jsonSorted)
+      // console.log(jsonSorted)
   jsonSorted.map(async (entry: any)=>{
     //set to find all posts with the entries terminal id 
     //right now its updating all of the post for each value? of json sorted
@@ -164,8 +163,7 @@ let userPass:string = userTest?.cPass!
     let value1 = parse(entry.lastCommunication, 'MM/dd/yy HH:mm', new Date());
     let value2 = parse(filteredPosts.lastCommunication, 'MM/dd/yy HH:mm', new Date())
     let result = isEqual(value1,value2)
-    // if( filteredPosts && result && filteredPosts.TerminalID == entry.TerminalId ){
-      console.log("before ", filteredPosts.lastCommunication,"postinfo");
+    if( filteredPosts && result && filteredPosts.TerminalID == entry.TerminalId ){
 
    await prisma.posts.update({  data:{
     TerminalId:entry.TerminalID,
@@ -181,10 +179,10 @@ let userPass:string = userTest?.cPass!
     Cassette1:entry.Cassette1,
     minReload:entry.minReload},where: {TerminalId : entry.TerminalID}
       
-    }).catch((err)=>{console.log(err)})  
-    // console.log("updated",entry);
+    }).catch((err)=>{console.log(err,"errrrr")})  
+    console.log("updated",entry);
 
-    // }
+    }
    
 
   })
@@ -195,7 +193,7 @@ let userPass:string = userTest?.cPass!
   // return res.json(await refromattedPostSubmit(allPosts)); 
 }
 // return allPosts;
-
+console.log("done")
 return allPosts
     }
 

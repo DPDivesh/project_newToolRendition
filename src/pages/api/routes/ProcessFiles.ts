@@ -42,7 +42,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 
   
 
-       let results = await columbusDataProcessing(req.body.email, scrapeInfo[0].cUserName,scrapeInfo[0].cPass).catch((err)=>console.log(err))
+       let results = await columbusDataProcessing(req.body.email).catch((err)=>console.log(err))
       //  res.status(200).json({ name: 'John Doe' });
 
         // const refromattedPostSubmit =async(allPosts: any[])=>{
