@@ -6,6 +6,7 @@ import { PrismaClientOptions } from '@prisma/client/runtime';
 import {isEqual, parse, parseISO} from "date-fns"
 import { fieldEncryptionMiddleware } from 'prisma-field-encryption';
 require('dotenv').config()
+let decryptionKey:any = process.env.PRISMA_FIELD_ENCRYPTION     // Add other keys here. Order does not matter.
 
 const path = require('path');
 const fs = require('fs');
@@ -23,7 +24,7 @@ const puppeteerLaunch=async(userName:string,userPass:string)=>{
   
     try{
     await (async () => {
-      const browser = await puppeteer.launch({headless: false})
+      const browser = await puppeteer.launch({headless: "new"})
       const page = await browser.newPage();      
 
       //logs in to the website for chromium browser
@@ -71,7 +72,7 @@ async function columbusDataProcessing(usersEmail:string){
     fieldEncryptionMiddleware({
       encryptionKey: process.env.PRISMA_FIELD_ENCRYPTION,
       decryptionKeys: [
-        process.env.PRISMA_FIELD_ENCRYPTION      // Add other keys here. Order does not matter.
+        decryptionKey     // Add other keys here. Order does not matter.
       ]
     })
   )
@@ -80,11 +81,11 @@ async function columbusDataProcessing(usersEmail:string){
       email:usersEmail
         }
   })
-  console.log("==============",userTest?.cPass,"================")
-
+let userName:string = userTest?.cUserName!
+let userPass:string = userTest?.cPass!
   //temp disable
-  
-  // await puppeteerLaunch(userName, userPass);
+  console.log("=================================",userName,userPass,"===============================")
+  await puppeteerLaunch( userName, userPass);
   
   
   
@@ -190,27 +191,6 @@ async function columbusDataProcessing(usersEmail:string){
 // console.log("-------------------------------------------------------------------")
   // console.log( await prisma.Posts.findMany(), "checking")
   // console.log("-------------------------------------------------------------------")
-
-  const refromattedPostSubmit =async(allPosts: any[])=>{
-
-    console.log("Making Posts")
-    const postsReformat = await allPosts.map((postsReformat: { TerminalId: any; Name: any; cashBalance: any; balType: any; estCashOut: number; lastCommunication: any; lastCashWD: any; rejectBalance: any; balanceAsOf: any; Cassette1: any; minReload: any; }) =>({
-      TerminalID: `${postsReformat.TerminalId}`,
-      Name:`${postsReformat.Name}`,
-      cashBalance: `${postsReformat.cashBalance}`,
-      balType:`${postsReformat.balType}`,
-      estCashOut:`${Math.round(postsReformat.estCashOut)}`,
-      lastCommunication:`${postsReformat.lastCommunication}`,
-      lastCashWD:`${postsReformat.lastCashWD}`,
-      rejectBalance:`${postsReformat.rejectBalance}`,
-      balanceAsOf: `${postsReformat.balanceAsOf}`,
-      Cassette1:`${postsReformat.Cassette1}`,
-      minReload: `${postsReformat.minReload}`
-    }));
-  
-    return postsReformat;
-  
-  }
   // console.log(await refromattedPostSubmit(allPosts),"-------------------------------------------------")
   // return res.json(await refromattedPostSubmit(allPosts)); 
 }
