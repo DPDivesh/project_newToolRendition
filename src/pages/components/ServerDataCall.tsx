@@ -23,7 +23,7 @@ import axios, { AxiosResponse } from 'axios'
       refreshData()
       // console.log("refreshing")
 
-    }, 9000)
+    }, 90000)
     
     return () => clearInterval(timer);
     
