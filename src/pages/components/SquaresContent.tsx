@@ -17,6 +17,7 @@ const SquaresContent =(props:any)=>{
   const [lastCashWD,setLastCashWD] = useState(props.data.lastCashWD)
   const [TerminalID,setTerminalID] = useState(props.data.TerminalId)
   const [minCash, setMinCash] = useState(props.data.minReload)
+  const [update,setUpdate] = useState(false)
   const refreshData=()=>{
     
 
@@ -39,6 +40,11 @@ axios.post("/api/routes/updateReloadAmount",{
 
 }
 
+const updateHandler = () =>{
+  console.log("test")
+  setUpdate(true)
+}
+
   const minReloadHandler =((e:any)=>{
     e.preventDefault()
     setMinCash(e.target.value)
@@ -50,7 +56,7 @@ axios.post("/api/routes/updateReloadAmount",{
   return(
 
     <>
-      {name != "undefined" ? <div className="squares bg-white text-black my-4 max-w-xs rounded-lg border-gray-500 border-1 shadow-2xl m-0" key={props.index}  >
+    {update ? <div className="squares bg-white text-black my-4 max-w-xs rounded-lg border-gray-500 border-1 shadow-2xl m-0" key={props.index}  >
             <div className="square-content flex flex-col mx-5 my-2" >
             <h2 className="text-black">Name: <u>{name}</u></h2>
             <h3>Current Balance: <span className={CashTotal<=minCash ? "text-red-500":"text-green-500"}>{CashTotal}</span></h3>
@@ -59,8 +65,22 @@ axios.post("/api/routes/updateReloadAmount",{
             <h3><span style={{color:"grey"}}>ID: {TerminalID}</span></h3>
             <h3><span style={{color:"grey"}}>Min Reload: {minCash}</span></h3>
             <form id="minimal-reload" onSubmit={reloadUpdateHandler}>
-              <InfoForm reload={minReloadHandler} minCash={minCash}/>
-              </form>
+    <InfoForm reload={minReloadHandler} minCash={minCash}/>
+    </form>
+            
+            </div>
+    
+          </div>:false}
+      {name != "undefined" ? <div className="squares bg-white text-black my-4 max-w-xs rounded-lg border-gray-500 border-1 shadow-2xl m-0" key={props.index}  >
+            <div onClick={updateHandler} className="square-content flex flex-col mx-5 my-2" >
+            <h2 className="text-black">Name: <u>{name}</u></h2>
+            <h3>Current Balance: <span className={CashTotal<=minCash ? "text-red-500":"text-green-500"}>{CashTotal}</span></h3>
+            <h3>Balance Update: <span style={{color:"green"}}>{balanceAsOf} </span></h3>
+            <h3><span style={{color:"grey"}}>Last Update: {lastCommunication}</span></h3>
+            <h3><span style={{color:"grey"}}>ID: {TerminalID}</span></h3>
+            <h3><span style={{color:"grey"}}>Min Reload: {minCash}</span></h3>
+            
+              <h4 className="text-center align-text-bottom" >Click to Update</h4>
 
             </div>
     

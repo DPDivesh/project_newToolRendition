@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth/next"
 import { PrismaClientOptions } from '@prisma/client/runtime';
 import {isEqual, parse, parseISO} from "date-fns"
 import { fieldEncryptionMiddleware } from 'prisma-field-encryption';
+import { error } from 'console';
 require('dotenv').config()
 let decryptionKey:any = process.env.PRISMA_FIELD_ENCRYPTION     // Add other keys here. Order does not matter.
 
@@ -21,7 +22,7 @@ export const client = new PrismaClient()
 
 
 const puppeteerLaunch=async(userName:string,userPass:string)=>{
-  
+
     try{
     await (async () => {
       const browser = await puppeteer.launch({headless: "new"})
@@ -61,12 +62,13 @@ const puppeteerLaunch=async(userName:string,userPass:string)=>{
       browser.close()
     })();
   }catch(err){
-    return console.log("puppeteer error",err);
+    throw(Error)
   }
     }
 
 async function columbusDataProcessing(usersEmail:string){
    // Now this works
+  //  throw(Error("error test"))
 
    client.$use(
     fieldEncryptionMiddleware({
@@ -83,6 +85,9 @@ async function columbusDataProcessing(usersEmail:string){
   })
 let userName:string = userTest?.cUserName!
 let userPass:string = userTest?.cPass!
+//testing a messed up user 
+// let userName:string = "dasdsa"
+// let userPass:string = "sdasdas"
   //temp disable
   await puppeteerLaunch( userName, userPass);
   
