@@ -2,9 +2,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 import { fieldEncryptionMiddleware } from 'prisma-field-encryption'
 
-import { useSession } from "next-auth/react";
-
-let prisma = new PrismaClient()
 
 export const client = new PrismaClient()
 
@@ -33,6 +30,5 @@ await client.scrapeInfo.create({data:{
     provider:"columbus"
     }}).catch((error:any)=>console.log(error,"fail"))
 
-console.log(req.body,"-------------------------")
     res.status(200).json("success")
 }

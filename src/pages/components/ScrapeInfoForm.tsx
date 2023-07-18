@@ -9,7 +9,6 @@ const ScrapeInfoForm = () =>{
 
     //need to make a route to take this info in and add it to prisma, also need it to return a list of services the user has. 
     const updateAccountScrape =(user:string,pass:string,email:any,provider:string)=>{
-      console.log(user,pass,email, )
       axios.post("../api/routes/addService",{user,pass,email,provider} )
  
   }

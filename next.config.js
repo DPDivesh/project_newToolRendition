@@ -22,7 +22,7 @@ module.exports = {
       'lh5.googleusercontent.com',
       'lh6.googleusercontent.com',
     ],
-   
+},
+output: 'standalone',
 
-}
 }

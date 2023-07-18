@@ -10,10 +10,9 @@ import { useState } from "react"
     const {data:session} = useSession()
     const [userProviderInfo, setUserProviderInfo] =useState()
     
-    let currentServices:any = axios.post("/api/routes/getUsersScrapeInfo", {email:session?.user?.email}).catch(function (error) {
+    let currentServices:any = axios.post("/api/routes/getUsersScrapeInfo", {email:session?.user?.email}).catch( (error)=> {
         console.log(error);
       });
-// console.log(currentServices.data[0].provider,"LOGGGGGGGGGGGGG")
 
 
     return(
