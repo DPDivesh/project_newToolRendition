@@ -55,7 +55,6 @@ const puppeteerLaunch=async(userName:string,userPass:string)=>{
         behavior: "allow",
         downloadPath: downloadPath,
       });
-      console.log("Downloading")
       await page.click("#btnView");
       await page.waitForNetworkIdle({idleTime:10000})
 
@@ -115,27 +114,10 @@ let userPass:string = userTest?.cPass!
       Cassette1:`${jsonSorted["Cassette 1"]}`,
       minReload: "2,000"
     }));
-    // arrName.forEach((machine)=>{
-    //     let machineInfo = new machineModel(machine); 
-    //     // console.log(machineInfo,"Info");
-    //     machineInfo.save();
-    // })
-    // alerts(arrName);
-
- 
-    
-  // setInterval(() => {
-  //   emailDatabaseUpdate(allPosts);
-  //   console.log("interval")
-  // }, 9000);
-
-// console.log(allPosts,"----------------------------------");
-  //if the post doest exist make it if it does update
-// if (allPosts){
+   
   
   let allPosts = await prisma.posts.findMany({where:{userEmail:usersEmail}})
-  // console.log(allPosts,"ALL POSTS");
-  // console.log(jsonSorted,jsonSorted.length,"------------------JSON SORTED---------------------")
+ 
 
   if(allPosts.length==0||allPosts == null){
     jsonSorted.map((entry: { TerminalID: any; storeName:string; cashBalance: any; balType: any; estCashOut: any; lastCommunication: any; lastCashWD: any; rejectBalance: any; balanceAsOf: any; Cassette1: any; minReload: any; })=>{
@@ -157,18 +139,15 @@ let userPass:string = userTest?.cPass!
   })
 }else{
 
-  // console.log(session)
-      // console.log("#####################################################")
-      // console.log(jsonSorted)
+  
   jsonSorted.map(async (entry: any)=>{
-    //set to find all posts with the entries terminal id 
-    //right now its updating all of the post for each value? of json sorted
-               //      (we need to get the dbs)        (We have this) 
+   
     let filteredPosts:any = await prisma.posts.findMany({where:{userEmail:usersEmail, TerminalId:entry.TerminalID}})
+   if(filteredPosts.lastCommunication != undefined){
     let value1 = parse(entry.lastCommunication, 'MM/dd/yy HH:mm', new Date());
-    let value2 = parse(filteredPosts.lastCommunication, 'MM/dd/yy HH:mm', new Date())
+    let value2 = parse(filteredPosts[0].lastCommunication, 'MM/dd/yy HH:mm', new Date())
     let result = isEqual(value1,value2)
-    if( filteredPosts && result && filteredPosts.TerminalID == entry.TerminalId ){
+    if(result == false){
 
    await prisma.posts.update({  data:{
     TerminalId:entry.TerminalID,
@@ -184,21 +163,17 @@ let userPass:string = userTest?.cPass!
     Cassette1:entry.Cassette1,
     minReload:entry.minReload},where: {TerminalId : entry.TerminalID}
       
-    }).catch((err)=>{console.log(err,"errrrr")})  
-    console.log("updated",entry);
+    }).catch((err)=>{console.log(err,"error updating Prisma Values")})  
 
     }
-   
+  }
 
   })
-// console.log("-------------------------------------------------------------------")
-  // console.log( await prisma.Posts.findMany(), "checking")
-  // console.log("-------------------------------------------------------------------")
-  // console.log(await refromattedPostSubmit(allPosts),"-------------------------------------------------")
-  // return res.json(await refromattedPostSubmit(allPosts)); 
+
 }
-// return allPosts;
-console.log("done")
+console.trace();
+allPosts = await prisma.posts.findMany({where:{userEmail:usersEmail, NOT: {storeName:"undefined"}}})
+
 return allPosts
     }
 

@@ -14,13 +14,11 @@ function App(){
 
   const onPrivacyChange =(value:any)=>{
     setPrivacy(value)
-    console.log(value,privacy)
 
   }
 
 
   useEffect(() => {
-    console.log(privacy,"useeffect");
   }, [privacy]);
 
 
