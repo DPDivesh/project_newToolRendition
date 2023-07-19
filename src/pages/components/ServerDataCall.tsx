@@ -11,7 +11,7 @@ import axios, { AxiosResponse } from 'axios'
     const [loadingState,setLoadingState]:any = useState(true);
     const [errorState, setErrorState]:any = useState(false);
     const [backendData,setBackendData]:any = useState({});
-      
+    
       
  
     
@@ -27,7 +27,7 @@ import axios, { AxiosResponse } from 'axios'
     return () => clearInterval(timer);
     
      
-      })
+      },[])
 
       const initializeLoadData =async()=>{
 
@@ -59,7 +59,6 @@ import axios, { AxiosResponse } from 'axios'
           setErrorState(true)
         }
      
-
        }
     const errorNotif = <div className="flex items-center p-4  text-sm text-red-800  border-white bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
     <svg className="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -74,7 +73,8 @@ import axios, { AxiosResponse } from 'axios'
       return(
         <>
         {errorState ?  errorNotif : false}
-        <div className={props.privacySetting ? "blur-sm":"blur-none"}><Squares backendData={backendData}/> </div>
+
+      {backendData.length=="undefined" ? null:<div className={props.privacySetting ? "blur-sm":"blur-none"}><Squares backendData={backendData} /> </div>}  
       {loadingState ? 
         <div className="text-xs text-center h-5 flex justify-center items-center font-medium leading-none text-center fixed inset-x-0
         bottom-0 text-blue-800 bg-blue-200  animate-pulse dark:bg-blue-900 dark:text-blue-200">loading...</div>

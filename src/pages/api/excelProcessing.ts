@@ -171,7 +171,6 @@ let userPass:string = userTest?.cPass!
   })
 
 }
-console.trace();
 allPosts = await prisma.posts.findMany({where:{userEmail:usersEmail, NOT: {storeName:"undefined"}}})
 
 return allPosts
