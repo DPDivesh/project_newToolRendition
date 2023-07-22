@@ -22,11 +22,15 @@ export const client = new PrismaClient()
 
 
 const puppeteerLaunch=async(userName:string,userPass:string)=>{
-
+console.log("Puppeter")
     try{
     await (async () => {
-      const browser = await puppeteer.launch({headless: "new"})
+      // const browser = await puppeteer.launch({headless: "new"})
+      const browser = await puppeteer.launch({args: ['--no-sandbox'],headless:"new",   executablePath: '/usr/bin/chromium',}).catch((err:any)=>{console.log(err)})
+      console.log("Puppeter")
+
       const page = await browser.newPage();      
+      console.log("Puppeter")
 
       //logs in to the website for chromium browser
       await page.goto('https://columbusdata.net/cdswebtool/login/login.aspx');
@@ -57,11 +61,13 @@ const puppeteerLaunch=async(userName:string,userPass:string)=>{
       });
       await page.click("#btnView");
       await page.waitForNetworkIdle({idleTime:10000})
-
+      console.log("puppeteer done")
       browser.close()
+      console.log("Puppeter")
+
     })();
   }catch(err){
-    throw(Error)
+    console.log(err)
   }
     }
 
@@ -89,7 +95,6 @@ let userPass:string = userTest?.cPass!
 // let userPass:string = "sdasdas"
   //temp disable
   await puppeteerLaunch( userName, userPass);
-  
   
   
   
@@ -141,14 +146,18 @@ let userPass:string = userTest?.cPass!
 
   
   jsonSorted.map(async (entry: any)=>{
-   
     let filteredPosts:any = await prisma.posts.findMany({where:{userEmail:usersEmail, TerminalId:entry.TerminalID}})
-   if(filteredPosts.lastCommunication != undefined){
+    
+   if(filteredPosts.length>0){
     let value1 = parse(entry.lastCommunication, 'MM/dd/yy HH:mm', new Date());
     let value2 = parse(filteredPosts[0].lastCommunication, 'MM/dd/yy HH:mm', new Date())
+
     let result = isEqual(value1,value2)
     if(result == false){
 
+
+
+      
    await prisma.posts.update({  data:{
     TerminalId:entry.TerminalID,
     userEmail:usersEmail,
@@ -172,7 +181,7 @@ let userPass:string = userTest?.cPass!
 
 }
 allPosts = await prisma.posts.findMany({where:{userEmail:usersEmail, NOT: {storeName:"undefined"}}})
-
+console.log("all Posts done")
 return allPosts
     }
 
