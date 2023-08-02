@@ -1,4 +1,4 @@
-# Use the default Dockerfile syntax
+#syntax=docker/dockerfile:1.4
 FROM node:18-alpine AS base
 
 # Install dependencies only when needed
@@ -9,10 +9,6 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY --link package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-
-RUN npm install --force -y chromium \
-  --no-install-recommends
-
 RUN \
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
   elif [ -f package-lock.json ]; then npm ci; \
@@ -21,10 +17,12 @@ RUN \
   fi
 
 
+# ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
 
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
-ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium
+
+# Install Google Chrome Stable and fonts
+# Note: this installs the necessary libs to make the browser work with Puppeteer.
 
 
 # Rebuild the source code only when needed
@@ -36,8 +34,10 @@ COPY --link  . .
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
-ENV NEXT_TELEMETRY_DISABLED 1
-
+# ENV NEXT_TELEMETRY_DISABLED 1
+RUN npm install
+RUN npx prisma generate
+# run prisma studio 
 # RUN yarn build
 
 # If using npm comment out above and use below instead
@@ -62,7 +62,7 @@ COPY --from=builder --link /app/public ./public
 COPY --from=builder --link --chown=1001:1001 /app/.next/standalone ./
 COPY --from=builder --link --chown=1001:1001 /app/.next/static ./.next/static
 
-USER nextjs
+USER root
 
 EXPOSE 3000
 

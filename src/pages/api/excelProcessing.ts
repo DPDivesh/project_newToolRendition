@@ -22,15 +22,17 @@ export const client = new PrismaClient()
 
 
 const puppeteerLaunch=async(userName:string,userPass:string)=>{
-console.log("Puppeter")
+console.log("Puppeter1")
     try{
     await (async () => {
       // const browser = await puppeteer.launch({headless: "new"})
-      const browser = await puppeteer.launch({args: ['--no-sandbox'],headless:"new",   executablePath: '/usr/bin/chromium',}).catch((err:any)=>{console.log(err)})
-      console.log("Puppeter")
+      const browser = await puppeteer.launch({
+        headless:"new" // if we need them.
+      });      
+      console.log("Puppeter2")
 
       const page = await browser.newPage();      
-      console.log("Puppeter")
+      console.log("Puppeter3")
 
       //logs in to the website for chromium browser
       await page.goto('https://columbusdata.net/cdswebtool/login/login.aspx');
@@ -172,7 +174,7 @@ let userPass:string = userTest?.cPass!
     Cassette1:entry.Cassette1,
     minReload:entry.minReload},where: {TerminalId : entry.TerminalID}
       
-    }).catch((err)=>{console.log(err,"error updating Prisma Values")})  
+    }).catch((err:any)=>{console.log(err,"error updating Prisma Values")})  
 
     }
   }
