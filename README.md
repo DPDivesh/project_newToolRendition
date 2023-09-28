@@ -1,38 +1,70 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ATM Status Tool
+
+View the status of all of the machines that you manage in one place, and in a more modern and intuitive UI.
+
+Future Updates
+
+- Automatically determine the most optimized routes to take
+- Algorithmically determine if machines are jammed or out of service.
+- Algorithmically determine successful locations
+- Create a risk index scoring system
+- Generate Email and text Alerts for notifications
+- Add processors
+
+[Live Demo](https://columbusdata.net)
+
+#
 
 ## Getting Started
 
-First, run the development server:
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+### Prerequisites
+
+An account with a supported payment processor (currently only [ColumbusData](https://columbusdata.net/)) with a(n) ATM location(s) or use the demo functionality. Configure google as a provider for NextAuth.
+
+### Installing
+
+Run the installation command,
+
+```
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Set up ENV
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Create a database url for mysql, Next Auth key, Google Client Secret, and ID.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```
+DATABASE_URL=###
+NEXTAUTH_SECRET=###
+GOOGLE_CLIENT_SECRET=###
+GOOGLE_CLIENT_ID=###
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+and Prisma Field Encryption [Documentation](https://www.npmjs.com/package/prisma-field-encryption)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```
+PRISMA_FIELD_ENCRYPTION_KEY=###
+```
 
-## Learn More
+and follow it up by running the program.
 
-To learn more about Next.js, take a look at the following resources:
+```
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Add additional notes about how to deploy this on a live system
 
-## Deploy on Vercel
+## Built With
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [T3 Stack](https://create.t3.gg/) - Utilizes Next.js, Typescript, Prisma, NextAuth,tRPC and Tailwind.
+- [EmailJS](https://www.emailjs.com/) - Send alerts to users via email.
+- [Puppeteer](https://pptr.dev/) - Headless Scraping of data.
+- [XLSX](https://maven.apache.org/) - Clean and make scraped data readable.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
