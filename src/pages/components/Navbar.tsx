@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { SplashLoginPage, splashLoginPage } from "./SplashLoginPage";
+import { SplashLoginPage } from "./SplashLoginPage";
 
 export default function Component(props: any) {
   const { data: session } = useSession();
