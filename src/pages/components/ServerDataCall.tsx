@@ -1,22 +1,30 @@
 import Squares from "./Squares";
 import React, { useEffect, useState, useRef } from "react";
 import axios, { AxiosResponse } from "axios";
+import { useInterval, useIsFirstRender } from "usehooks-ts";
+import { useIsMounted } from "usehooks-ts";
 
 const ServerDataCall = (props: any) => {
   const [loadingState, setLoadingState]: any = useState(true);
   const [errorState, setErrorState]: any = useState(false);
   const [backendData, setBackendData]: any = useState({});
+  const isFirst = useIsFirstRender();
 
+  //bring the data call up higher to the index?
   useEffect(() => {
-    initializeLoadData();
-    refreshData();
-
-    const timer = setInterval(() => {
-      errorState ? false : refreshData;
-    }, 660000);
-
-    return () => clearInterval(timer);
+    isFirst && initializeLoadData();
   }, []);
+
+  const delay: number = 59000;
+
+  useInterval(
+    () => {
+      // Your custom logic here
+      refreshData();
+    },
+    // Delay in milliseconds or null to stop it
+    delay
+  );
 
   const initializeLoadData = async () => {
     const res: any = await axios

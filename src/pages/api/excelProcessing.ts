@@ -21,26 +21,23 @@ export const client = new PrismaClient();
 // const email = process.env.SECRET_USER_EMAIL;
 
 const puppeteerLaunch = async (userName: string, userPass: string) => {
-  console.log("Puppeter1");
   try {
     await (async () => {
       // const browser = await puppeteer.launch({headless: "new"})
       const browser = await puppeteer.launch({
         headless: "new", // if we need them.
       });
-      console.log("Puppeter2");
 
-      const page = await browser.newPage();
-      console.log("Puppeter3");
+      const [page] = await browser.pages();
 
       //logs in to the website for chromium browser
       await page.goto("https://columbusdata.net/cdswebtool/login/login.aspx");
       await page.waitForSelector("#UsernameTextbox");
       // eslint-disable-next-line no-unused-expressions
-      await page.type("#UsernameTextbox", userName), { delay: 1000 };
+      await page.type("#UsernameTextbox", `${userName}`), { delay: 1000 };
 
       // eslint-disable-next-line no-unused-expressions
-      await page.type("#PasswordTextbox", userPass), { delay: 10000 };
+      await page.type("#PasswordTextbox", `${userPass}`), { delay: 10000 };
       await page.click("#LoginButton");
       //goes to page with main content to download
       //enable this to reload
@@ -67,9 +64,7 @@ const puppeteerLaunch = async (userName: string, userPass: string) => {
       });
       await page.click("#btnView");
       await page.waitForNetworkIdle({ idleTime: 10000 });
-      console.log("puppeteer done");
       browser.close();
-      console.log("Puppeter");
     })();
   } catch (err) {
     console.log(err);
@@ -95,10 +90,7 @@ async function columbusDataProcessing(usersEmail: string) {
   });
   let userName: string = userTest?.cUserName!;
   let userPass: string = userTest?.cPass!;
-  //testing a messed up user
-  // let userName:string = "dasdsa"
-  // let userPass:string = "sdasdas"
-  //temp disable
+
   await puppeteerLaunch(userName, userPass);
 
   const filePath = path.join(
@@ -134,88 +126,58 @@ async function columbusDataProcessing(usersEmail: string) {
     where: { userEmail: usersEmail },
   });
 
-  if (allPosts.length == 0 || allPosts == null) {
-    jsonSorted.map(
-      (entry: {
-        TerminalID: any;
-        storeName: string;
-        cashBalance: any;
-        balType: any;
-        estCashOut: any;
-        lastCommunication: any;
-        lastCashWD: any;
-        rejectBalance: any;
-        balanceAsOf: any;
-        Cassette1: any;
-        minReload: any;
-      }) => {
-        prisma.posts
-          .create({
-            data: {
-              TerminalId: entry.TerminalID,
-              userEmail: usersEmail,
-              storeName: entry.storeName,
-              cashBalance: entry.cashBalance,
-              balType: entry.balType,
-              estCashOut: entry.estCashOut,
-              lastCommunication: entry.lastCommunication,
-              lastCashWD: entry.lastCashWD,
-              rejectBalance: entry.rejectBalance,
-              balanceAsOf: entry.balanceAsOf,
-              Cassette1: entry.Cassette1,
-              minReload: entry.minReload,
-            },
-          })
-          .catch((err: any) => {
-            console.log(err);
-          });
-      }
-    );
-  } else {
-    jsonSorted.map(async (entry: any) => {
-      let filteredPosts: any = await prisma.posts.findMany({
-        where: { userEmail: usersEmail, TerminalId: entry.TerminalID },
-      });
+  jsonSorted.map(
+    (entry: {
+      TerminalID: any;
+      storeName: string;
+      cashBalance: any;
+      balType: any;
+      estCashOut: any;
+      lastCommunication: any;
+      lastCashWD: any;
+      rejectBalance: any;
+      balanceAsOf: any;
+      Cassette1: any;
+      minReload: any;
+    }) => {
+      prisma.posts
+        .upsert({
+          where: { TerminalId: entry.TerminalID },
+          update: {
+            TerminalId: entry.TerminalID,
+            userEmail: usersEmail,
+            storeName: entry.storeName,
+            cashBalance: entry.cashBalance,
+            balType: entry.balType,
+            estCashOut: entry.estCashOut,
+            lastCommunication: entry.lastCommunication,
+            lastCashWD: entry.lastCashWD,
+            rejectBalance: entry.rejectBalance,
+            balanceAsOf: entry.balanceAsOf,
+            Cassette1: entry.Cassette1,
+            minReload: entry.minReload,
+          },
+          create: {
+            TerminalId: entry.TerminalID,
+            userEmail: usersEmail,
+            storeName: entry.storeName,
+            cashBalance: entry.cashBalance,
+            balType: entry.balType,
+            estCashOut: entry.estCashOut,
+            lastCommunication: entry.lastCommunication,
+            lastCashWD: entry.lastCashWD,
+            rejectBalance: entry.rejectBalance,
+            balanceAsOf: entry.balanceAsOf,
+            Cassette1: entry.Cassette1,
+            minReload: entry.minReload,
+          },
+        })
+        .catch((err: any) => {
+          console.log(err);
+        });
+    }
+  );
 
-      if (filteredPosts.length > 0) {
-        let value1 = parse(
-          entry.lastCommunication,
-          "MM/dd/yy HH:mm",
-          new Date()
-        );
-        let value2 = parse(
-          filteredPosts[0].lastCommunication,
-          "MM/dd/yy HH:mm",
-          new Date()
-        );
-
-        let result = isEqual(value1, value2);
-        if (result == false) {
-          await prisma.posts
-            .update({
-              data: {
-                TerminalId: entry.TerminalID,
-                userEmail: usersEmail,
-                storeName: entry.storeName,
-                cashBalance: entry.cashBalance,
-                balType: entry.balType,
-                estCashOut: entry.estCashOut,
-                lastCommunication: entry.lastCommunication,
-                lastCashWD: entry.lastCashWD,
-                rejectBalance: entry.rejectBalance,
-                balanceAsOf: entry.balanceAsOf,
-                Cassette1: entry.Cassette1,
-                minReload: entry.minReload,
-              },
-              where: { TerminalId: entry.TerminalID },
-            })
-            .catch((err: any) => {
-              console.log(err, "error updating Prisma Values");
-            });
-        }
-      }
-    });
-  }
   allPosts = await prisma.posts.findMany({
     where: { userEmail: usersEmail, NOT: { storeName: "undefined" } },
   });
