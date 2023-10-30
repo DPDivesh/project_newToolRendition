@@ -15,7 +15,7 @@ const ServerDataCall = (props: any) => {
     isFirst && initializeLoadData();
   }, []);
 
-  const delay: number = 59000;
+  const delay: number = 592000;
 
   useInterval(
     () => {
