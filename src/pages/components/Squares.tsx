@@ -11,7 +11,7 @@ const Squares = (props: any) => {
 
   return (
     <div>
-      <div className="justify-items-center grid md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-4 mx-50 ">
+      <div className="justify-items-center grid sm:grid-cols-2 grid-cols-1 lg:grid-cols-3 w-screen xl:grid-cols-4 mx-50  ">
         {arrayOfSquares}
       </div>
     </div>

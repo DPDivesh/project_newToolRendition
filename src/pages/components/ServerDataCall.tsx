@@ -79,12 +79,12 @@ const ServerDataCall = (props: any) => {
   );
 
   return (
-    <div className="bg-indigo-400 h-min-100v">
+    <div className="bg-indigo-400 h-min-100vw w-min-100vw">
       {errorState ? errorNotif : false}
 
       {backendData.length == "undefined" ? null : (
         <div className={props.privacySetting ? "blur-sm" : "blur-none"}>
-          <Squares backendData={backendData} />{" "}
+          <Squares backendData={backendData} />
         </div>
       )}
       {loadingState ? (

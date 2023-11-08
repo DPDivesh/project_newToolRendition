@@ -63,10 +63,10 @@ const SquaresContent = (props: any) => {
 
   const withUpdateForm = (
     <div
-      className="squares bg-white text-black my-4 max-w-xs rounded-lg border-gray-500 border-1 shadow-2xl m-0"
+      className=" bg-white text-black my-4 rounded-lg  w-4/5 sm:max-w-xs md:max-w-sm lg:max-w-md border-gray-500 border-1 shadow-2xl m-0"
       ref={ref}
     >
-      <div className="square-content flex flex-col mx-5 my-2">
+      <div className=" flex flex-col mx-5 my-2">
         <h2 className="text-black">
           Name: <u>{name}</u>
         </h2>
@@ -106,7 +106,7 @@ const SquaresContent = (props: any) => {
   const withoutUpdateForm = (
     <div
       onClick={handleClickInside}
-      className="squares bg-white text-black my-4 max-w-xs rounded-lg border-gray-500 border-1 shadow-2xl m-0"
+      className="squares bg-white text-black my-4 w-4/5 sm:max-w-xs rounded-lg border-gray-500 border-1 shadow-2xl m-0"
     >
       <div className="square-content flex flex-col mx-5 my-2">
         <h2 className="text-black">

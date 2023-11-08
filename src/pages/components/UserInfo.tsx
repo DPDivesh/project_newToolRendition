@@ -10,8 +10,8 @@ const UserInfo = (props: any) => {
   const pathname = usePathname();
 
   return (
-    <div className="mt-">
-      <div className=" w-full flex flex-col items-end self-center">
+    <div className="bg-slate-800 h-3/6">
+      <div className=" w-full flex flex-col  items-end self-center">
         <div className="flex">
           <div>
             <Image
@@ -42,10 +42,10 @@ const UserInfo = (props: any) => {
           </div>
         </div>
       </div>
-      <div className="flex items-end my-2">
+      <div className="flex items-end my-2 justify-evenly  w-full ">
         {pathname == "/" ? (
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-fit self-end mr-8 mt-2"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded"
             onClick={() =>
               props.privacySetting
                 ? props.onSettingUserPrivacy(false)
@@ -58,7 +58,7 @@ const UserInfo = (props: any) => {
           false
         )}
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-fit self-end mr-8  "
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded "
           onClick={() => signOut()}
         >
           Sign out

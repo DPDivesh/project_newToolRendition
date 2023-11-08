@@ -143,6 +143,7 @@ const Sidebar = ({ handleCloseButton }: any, props: any) => {
             </ul>
           </div>
           <ToggleButton
+            //find where to add additional component or solve (props,{handleCloseButton})
             privacySetting={privacy}
             onSettingUserPrivacy={onPrivacyChange}
           />
