@@ -5,7 +5,7 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { SplashLoginPage } from "./SplashLoginPage";
-import { ToggleButton } from "./ToggleButton";
+import ToggleButton from "./ToggleButton";
 const Sidebar = ({ handleCloseButton }: any, props: any) => {
   const { data: session } = useSession();
   let userInfoImage: any = session?.user?.image;
@@ -142,11 +142,21 @@ const Sidebar = ({ handleCloseButton }: any, props: any) => {
               </li> */}
             </ul>
           </div>
-          <ToggleButton
+
+          {/* <ToggleButton
             //find where to add additional component or solve (props,{handleCloseButton})
-            privacySetting={privacy}
-            onSettingUserPrivacy={onPrivacyChange}
-          />
+            privacySetting={props.privacy}
+            onSettingUserPrivacy={props.onPrivacyChange}
+          /> */}
+          <div className="inline-flex  justify-evenly align-bottom rounded-lg border border-gray-100 bg-gray-100 ">
+            <button className="inline-block rounded-md px-4 py-2 text-sm text-gray-500 hover:text-gray-700 focus:relative">
+              Blur
+            </button>
+
+            <button className="inline-block rounded-md bg-white px-4 py-2 text-sm text-blue-500 shadow-sm focus:relative">
+              Unblur
+            </button>
+          </div>
           <div className="sticky inset-x-0 bottom-0 border-t border-gray-100">
             <a
               href="#"

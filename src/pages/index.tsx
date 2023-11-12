@@ -8,6 +8,8 @@ import { useOnClickOutside } from "usehooks-ts";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import UserInfo from "./components/UserInfo";
+import BlurContext from "../store/user-blur-context";
+
 function App() {
   const ref = useRef(null);
   const { data: session } = useSession();
@@ -30,7 +32,10 @@ function App() {
   const onPrivacyChange = (value: any) => {
     setPrivacy(value);
   };
-
+  const blrValue = {
+    privacySetting: privacy,
+    onSettingUserPrivacy: onPrivacyChange,
+  };
   useEffect(() => {}, [privacy]);
   useOnClickOutside(ref, handleClickOutside);
 
@@ -46,11 +51,9 @@ function App() {
               !buttonStat && "z-50 "
             )}
           >
-            <Sidebar
-              handleCloseButton={handleCloseButton}
-              privacySetting={privacy}
-              onSettingUserPrivacy={onPrivacyChange}
-            />
+            <BlurContext.Provider value={blrValue}>
+              <Sidebar handleCloseButton={handleCloseButton} />
+            </BlurContext.Provider>
             {/* <UserInfo
               privacySetting={privacy}
               onSettingUserPrivacy={onPrivacyChange}

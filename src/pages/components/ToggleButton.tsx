@@ -1,4 +1,8 @@
+import BlurContext from "@/store/user-blur-context";
+import { useContext } from "react";
+
 const ToggleButton = (props: any) => {
+  const { privacySetting, onSettingUserPrivacy } = useContext(BlurContext);
   return (
     <label
       htmlFor="AcceptConditions"
@@ -6,9 +10,9 @@ const ToggleButton = (props: any) => {
     >
       <input
         onChange={() =>
-          props.privacySetting
-            ? props.onSettingUserPrivacy(false)
-            : props.onSettingUserPrivacy(true)
+          privacySetting
+            ? onSettingUserPrivacy(false)
+            : onSettingUserPrivacy(true)
         }
         type="checkbox"
         id="AcceptConditions"
