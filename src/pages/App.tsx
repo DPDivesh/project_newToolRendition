@@ -51,6 +51,6 @@ export function App() {
       </>
     );
   } else {
-    return <Navbar />;
+    return <Navbar handleButton={() => {}} />;
   }
 }

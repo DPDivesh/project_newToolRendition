@@ -78,13 +78,11 @@ const Sidebar = ({ handleCloseButton }: any, props: any) => {
                   Demo
                 </Link>
               </li>
-              <li>
-                <button
-                  onClick={() => signOut()}
-                  className=" block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                >
-                  Sign Out
-                </button>
+              <li
+                className=" block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                onClick={() => signOut()}
+              >
+                Sign Out
               </li>
 
               {/* <li>
@@ -148,15 +146,7 @@ const Sidebar = ({ handleCloseButton }: any, props: any) => {
             privacySetting={props.privacy}
             onSettingUserPrivacy={props.onPrivacyChange}
           /> */}
-          <div className="inline-flex  justify-evenly align-bottom rounded-lg border border-gray-100 bg-gray-100 ">
-            <button className="inline-block rounded-md px-4 py-2 text-sm text-gray-500 hover:text-gray-700 focus:relative">
-              Blur
-            </button>
-
-            <button className="inline-block rounded-md bg-white px-4 py-2 text-sm text-blue-500 shadow-sm focus:relative">
-              Unblur
-            </button>
-          </div>
+          <ToggleButton />
           <div className="sticky inset-x-0 bottom-0 border-t border-gray-100">
             <a
               href="#"
@@ -169,15 +159,16 @@ const Sidebar = ({ handleCloseButton }: any, props: any) => {
                 alt="profile avatar"
                 sizes="100vw"
                 style={{
-                  width: "100%",
-                  height: "100%",
+                  borderRadius: "50%",
+                  width: "70%",
+                  height: "70%",
                 }}
               />
               <div className="h-10 w-10 rounded-full object-cover" />
 
               <div>
                 <p className="text-xs">
-                  <strong className="block font-medium">
+                  <strong className="block font-bold text-md">
                     {session!.user!.name}
                   </strong>
 

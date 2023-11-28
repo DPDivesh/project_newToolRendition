@@ -33,7 +33,7 @@ function App() {
     setPrivacy(value);
   };
   const blrValue = {
-    privacySetting: privacy,
+    privacySetting: privacy ? "true" : "false",
     onSettingUserPrivacy: onPrivacyChange,
   };
   useEffect(() => {}, [privacy]);
@@ -77,6 +77,8 @@ function App() {
         </div>
       </>
     );
+  } else {
+    return <Navbar handleButton={() => {}} />;
   }
 }
 export default App;

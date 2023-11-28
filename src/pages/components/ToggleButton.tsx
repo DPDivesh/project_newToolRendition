@@ -1,55 +1,42 @@
 import BlurContext from "@/store/user-blur-context";
-import { useContext } from "react";
+import clsx from "clsx";
+import { useContext, useState } from "react";
+
+// className={clsx(
+//   "h-screen absolute bg-slate-800 max-w-xs top-0 ",
+//   buttonStat && "hidden",
+//   !buttonStat && "z-50 "
+// )}
 
 const ToggleButton = (props: any) => {
   const { privacySetting, onSettingUserPrivacy } = useContext(BlurContext);
+  const [privacy, setPrivacy] = useState(false);
   return (
-    <label
-      htmlFor="AcceptConditions"
-      className="relative h-8 w-14 cursor-pointer ml-7  [-webkit-tap-highlight-color:_transparent]"
-    >
-      <input
-        onChange={() =>
-          privacySetting
-            ? onSettingUserPrivacy(false)
-            : onSettingUserPrivacy(true)
-        }
-        type="checkbox"
-        id="AcceptConditions"
-        className="peer sr-only [&:checked_+_span_svg[data-checked-icon]]:block [&:checked_+_span_svg[data-unchecked-icon]]:hidden"
-      />
+    <div className="block px-4 py-2 text-sm font-medium flex mt-auto justify-center  ">
+      <button
+        onClick={() => {
+          privacy ? setPrivacy(false) : setPrivacy(true);
 
-      <span className="absolute inset-y-0 start-0 z-10 m-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-white text-gray-400 transition-all peer-checked:start-6 peer-checked:text-green-600">
-        <svg
-          data-unchecked-icon
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-4 w-4"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-            clip-rule="evenodd"
-          />
-        </svg>
-        <svg
-          data-checked-icon
-          xmlns="http://www.w3.org/2000/svg"
-          className="hidden h-4 w-4"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-            clip-rule="evenodd"
-          />
-        </svg>
-      </span>
+          !privacy ? onSettingUserPrivacy(true) : onSettingUserPrivacy(false);
+        }}
+        className="inline-block w-11/12 py-2 text-sm rounded-md focus:relative bg-gray-100  text-blue-500"
+      >
+        {!privacy ? <>Blur</> : <>Unblur</>}
+      </button>
 
-      <span className="absolute inset-0 rounded-full bg-gray-500 transition peer-checked:bg-green-500"></span>
-    </label>
+      {/* <button
+        onClick={() => {
+          onSettingUserPrivacy(false);
+          setPrivacy(false);
+        }}
+        className={clsx(
+          "inline-block rounded-md w-1/4  px-4 py-2 z-50 text-sm shadow-sm focus:relative",
+          !privacy && "text-blue-500 bg-white"
+        )}
+      >
+        Unblur
+      </button> */}
+    </div>
   );
 };
 export default ToggleButton;
