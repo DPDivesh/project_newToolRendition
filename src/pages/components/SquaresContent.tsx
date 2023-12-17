@@ -63,11 +63,11 @@ const SquaresContent = (props: any) => {
 
   const withUpdateForm = (
     <div
-      className=" bg-white text-black my-4 rounded-lg  w-4/5 sm:max-w-xs md:max-w-sm lg:max-w-md border-gray-500 border-1 shadow-2xl m-0"
+      className=" bg-white   dark:bg-gray-900  text-black my-4 rounded-lg  w-4/5 sm:max-w-xs md:max-w-sm lg:max-w-md border-gray-500 border-1 shadow-2xl m-0"
       ref={ref}
     >
-      <div className=" flex flex-col mx-5 my-2">
-        <h2 className="text-black">
+      <div className=" flex flex-col dark:text-white  mx-5 my-2">
+        <h2 className="text-black dark:text-white ">
           Name: <u>{name}</u>
         </h2>
         <h3>
@@ -79,20 +79,20 @@ const SquaresContent = (props: any) => {
           </span>
         </h3>
         <h3>
-          Balance Update: <span style={{ color: "green" }}>{balanceAsOf} </span>
+          Balance Update: <span className="text-green-600">{balanceAsOf} </span>
         </h3>
         <h3>
-          <span style={{ color: "grey" }}>
+          <span className="dark:text-gray-300">
             Last Update: {lastCommunication}
           </span>
         </h3>
         <h3>
-          <span style={{ color: "grey" }}>ID: {TerminalID}</span>
+          <span className="dark:text-gray-300">ID: {TerminalID}</span>
         </h3>
         <h3>
-          <span style={{ color: "grey" }}>Min Reload: {minCash}</span>
+          <span className="dark:text-gray-300">Min Reload: {minCash}</span>
         </h3>
-        <form id="minimal-reload" onSubmit={reloadUpdateHandler}>
+        <form id="minimal-reload  " onSubmit={reloadUpdateHandler}>
           <InfoForm
             reload={minReloadHandler}
             parentFormFunction={parentForm}
@@ -106,10 +106,10 @@ const SquaresContent = (props: any) => {
   const withoutUpdateForm = (
     <div
       onClick={handleClickInside}
-      className="squares bg-white text-black my-4 w-4/5 sm:max-w-xs rounded-lg border-gray-500 border-1 shadow-2xl m-0"
+      className="squares bg-white dark:bg-gray-900  text-black my-4 w-4/5 sm:max-w-xs rounded-lg border-gray-500 border-1 shadow-2xl m-0"
     >
-      <div className="square-content flex flex-col mx-5 my-2">
-        <h2 className="text-black">
+      <div className="square-content flex dark:text-white flex-col mx-5 my-2">
+        <h2 className="text-black dark:text-white">
           Name: <u>{name}</u>
         </h2>
         <h3>
@@ -121,18 +121,18 @@ const SquaresContent = (props: any) => {
           </span>
         </h3>
         <h3>
-          Balance Update: <span style={{ color: "green" }}>{balanceAsOf} </span>
+          Balance Update: <span className="text-green-600">{balanceAsOf} </span>
         </h3>
         <h3>
-          <span style={{ color: "grey" }}>
+          <span className="dark:text-gray-300">
             Last Update: {lastCommunication}
           </span>
         </h3>
         <h3>
-          <span style={{ color: "grey" }}>ID: {TerminalID}</span>
+          <span className="dark:text-gray-300">ID: {TerminalID}</span>
         </h3>
         <h3>
-          <span style={{ color: "grey" }}>Min Reload: {minCash}</span>
+          <span className="dark:text-gray-300">Min Reload: {minCash}</span>
         </h3>
         <h4 className="text-center align-text-bottom">Click to Update</h4>
       </div>

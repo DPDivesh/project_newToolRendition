@@ -34,6 +34,8 @@ const ServerDataCall = (props: any) => {
       .catch(function (error) {
         console.log(error);
       });
+    console.log(res.data);
+
     setBackendData(res.data);
   };
 
@@ -47,7 +49,15 @@ const ServerDataCall = (props: any) => {
       .catch(() => {
         return setErrorState(true), console.log("Issue in process files");
       });
-    console.log(res);
+    console.log(res.data);
+    // const res2: any = await axios
+    //   .post("/api/routes/send", {
+    //     email: `${props.userData.user.email}`,
+    //   })
+    //   .catch(() => {
+    //     return setErrorState(true), console.log("Issue in process files");
+    //   });
+
     if (res.data.length != 0) {
       setBackendData(res.data);
       setLoadingState(false);

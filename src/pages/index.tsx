@@ -9,12 +9,15 @@ import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import UserInfo from "./components/UserInfo";
 import BlurContext from "../store/user-blur-context";
+import { ThemeProvider, useTheme } from "next-themes";
 
 function App() {
   const ref = useRef(null);
   const { data: session } = useSession();
   const [privacy, setPrivacy] = useState(false);
   const [buttonStat, setbuttonStat] = useState(true);
+  const { systemTheme, theme, setTheme } = useTheme();
+  const currentTheme = theme === "system" ? systemTheme : theme;
 
   const handleButton = () => {
     console.log("clicked");
@@ -41,7 +44,7 @@ function App() {
 
   if (session) {
     return (
-      <>
+      <ThemeProvider attribute="class">
         <div className="flex">
           <aside
             ref={ref}
@@ -75,7 +78,7 @@ function App() {
             </div>
           </main>
         </div>
-      </>
+      </ThemeProvider>
     );
   } else {
     return <Navbar handleButton={() => {}} />;

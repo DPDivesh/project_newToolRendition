@@ -16,10 +16,10 @@ const Sidebar = ({ handleCloseButton }: any, props: any) => {
       <div className=" ">
         {/* image  */}
 
-        <div className="flex h-screen flex-col justify-between border-e bg-white">
+        <div className="flex h-screen flex-col justify-between border-e bg-white dark:bg-gray-900">
           <div className="px-4 py-6">
             <div className="flex justify-between items-center">
-              <span className="grid h-10 w-32 place-content-center rounded-lg bg-gray-100 text-xs text-gray-600">
+              <span className="grid h-10 w-32 place-content-center rounded-lg bg-gray-100  text-xs text-gray-600 ">
                 ATM Info
               </span>
               <button className="h-20 relative group">
@@ -44,10 +44,10 @@ const Sidebar = ({ handleCloseButton }: any, props: any) => {
                 </a>
               </button>
             </div>
-            <ul className="mt-6 space-y-1">
+            <ul className="mt-6 space-y-1 ">
               <Link
                 href={"/"}
-                className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 dark:text-white hover:bg-gray-100 hover:text-gray-700"
               >
                 Home
               </Link>
@@ -55,7 +55,7 @@ const Sidebar = ({ handleCloseButton }: any, props: any) => {
               <li>
                 <Link
                   href={"../Accounts"}
-                  className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                  className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 dark:text-white hover:bg-gray-100 hover:text-gray-700"
                 >
                   Accounts
                 </Link>
@@ -64,7 +64,7 @@ const Sidebar = ({ handleCloseButton }: any, props: any) => {
               <li>
                 <Link
                   href={"../Alerts"}
-                  className=" block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                  className=" block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 dark:text-white hover:bg-gray-100 hover:text-gray-700"
                 >
                   Alerts
                 </Link>
@@ -73,13 +73,13 @@ const Sidebar = ({ handleCloseButton }: any, props: any) => {
               <li>
                 <Link
                   href={"../Demo"}
-                  className=" block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                  className=" block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 dark:text-white hover:bg-gray-100 hover:text-gray-700"
                 >
                   Demo
                 </Link>
               </li>
               <li
-                className=" block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                className=" block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 dark:text-white hover:bg-gray-100 hover:text-gray-700"
                 onClick={() => signOut()}
               >
                 Sign Out
