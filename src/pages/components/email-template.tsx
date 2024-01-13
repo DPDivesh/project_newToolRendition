@@ -2,47 +2,93 @@ import * as React from "react";
 import { Html } from "@react-email/html";
 import { Button } from "@react-email/button";
 
-export function Email(props: { firstName?: string; url?: any }) {
-  const { url } = props;
-
+export function Email(props: { firstName?: string; url?: any; text?: any }) {
   return (
     <Html lang="en">
       <div className="flow-root">
-        <dl className="-my-3 divide-y divide-gray-100 text-sm">
-          <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-            <dt className="font-medium text-gray-900">Title</dt>
-            <dd className="text-gray-700 sm:col-span-2">Mr</dd>
-          </div>
+        <div className="overflow-x-auto">
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <tbody>
+              <tr style={{ backgroundColor: "#f8f8f8" }}>
+                {props.text.map((text: any) => (
+                  <td
+                    style={{
+                      whiteSpace: "nowrap",
+                      padding: "10px",
+                      fontWeight: "bold",
+                      color: "#333333",
+                    }}
+                  >
+                    {text}
+                  </td>
+                ))}
+                <td
+                  style={{
+                    whiteSpace: "nowrap",
+                    padding: "10px",
+                    fontWeight: "bold",
+                    color: "#333333",
+                  }}
+                >
+                  John Doe
+                </td>
+                <td
+                  style={{
+                    whiteSpace: "nowrap",
+                    padding: "10px",
+                    color: "#555555",
+                  }}
+                >
+                  24/05/1995
+                </td>
+                <td
+                  style={{
+                    whiteSpace: "nowrap",
+                    padding: "10px",
+                    color: "#555555",
+                  }}
+                >
+                  Web Developer
+                </td>
+                <td
+                  style={{
+                    whiteSpace: "nowrap",
+                    padding: "10px",
+                    color: "#555555",
+                  }}
+                >
+                  $120,000
+                </td>
+              </tr>
 
-          <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-            <dt className="font-medium text-gray-900">Name</dt>
-            <dd className="text-gray-700 sm:col-span-2">John Frusciante</dd>
-          </div>
-
-          <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-            <dt className="font-medium text-gray-900">Occuputation</dt>
-            <dd className="text-gray-700 sm:col-span-2">Guitarist</dd>
-          </div>
-
-          <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-            <dt className="font-medium text-gray-900">Salary</dt>
-            <dd className="text-gray-700 sm:col-span-2">$1,000,000+</dd>
-          </div>
-
-          <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-            <dt className="font-medium text-gray-900">Bio</dt>
-            <dd className="text-gray-700 sm:col-span-2">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Et
-              facilis debitis explicabo doloremque impedit nesciunt dolorem
-              facere, dolor quasi veritatis quia fugit aperiam aspernatur neque
-              molestiae labore aliquam soluta architecto?
-            </dd>
-          </div>
-        </dl>
+              <tr>
+                <td
+                  style={{
+                    whiteSpace: "nowrap",
+                    padding: "10px",
+                    fontWeight: "bold",
+                    color: "#333333",
+                  }}
+                >
+                  Jane Doe
+                </td>
+                <td
+                  style={{
+                    whiteSpace: "nowrap",
+                    padding: "10px",
+                    color: "#555555",
+                  }}
+                >
+                  04/11/1980
+                </td>
+                {/* ... */}
+              </tr>
+              {/* ... */}
+            </tbody>
+          </table>
+          {/* ... */}
+        </div>
       </div>
-      <Button href={url}>Click me</Button>
     </Html>
   );
 }
-
-export default Email;

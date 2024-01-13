@@ -7,6 +7,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     // Extract parameters from the request body
+    console.log(req.body);
     const { email, subject, text } = req.body;
 
     const data = await resend.emails.send({

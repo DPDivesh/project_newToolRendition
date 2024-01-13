@@ -34,11 +34,46 @@ const ServerDataCall = (props: any) => {
       .catch(function (error) {
         console.log(error);
       });
-    console.log(res.data);
 
     setBackendData(res.data);
-  };
+    // Check if any machines are under the min reload
+    const underMinReload = res.data.filter(
+      (machine: { minReload: any; cashBalance: any; reload: number }) =>
+        machine.cashBalance < machine.minReload
+    );
+    console.log(underMinReload);
+    if (underMinReload.length > 0) {
+      // Call the resend API endpoint
+      const underMinReloadStr = underMinReload
+        .map((machine: any) => JSON.stringify(machine))
+        .join(", ");
 
+      await axios
+        .post("/api/send", {
+          email: `${props.userData.user.email}`,
+          subject: "Machines Under Min Reload",
+          text: `The following machines are under the min reload:${underMinReloadStr}`,
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
+  //   {
+  //     "id": "clnuxhsl20006sitcy7sfheqy",
+  //     "TerminalId": "L474792",
+  //     "userEmail": "diveshpatel39@gmail.com",
+  //     "storeName": "NICK SHELL SERVICE",
+  //     "cashBalance": "2860",
+  //     "balType": "T",
+  //     "estCashOut": "45317",
+  //     "lastCommunication": "12/17/23 12:08",
+  //     "lastCashWD": "12/17/23 12:08",
+  //     "rejectBalance": "0",
+  //     "balanceAsOf": "$2,860 as of 12/17/2023 10:08:05 AM",
+  //     "Cassette1": "2900",
+  //     "minReload": "2,000"
+  // }
   const refreshData = async () => {
     setLoadingState(true);
 
@@ -49,7 +84,6 @@ const ServerDataCall = (props: any) => {
       .catch(() => {
         return setErrorState(true), console.log("Issue in process files");
       });
-    console.log(res.data);
     // const res2: any = await axios
     //   .post("/api/routes/send", {
     //     email: `${props.userData.user.email}`,
